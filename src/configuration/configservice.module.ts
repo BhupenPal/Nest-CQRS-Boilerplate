@@ -5,9 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      ignoreEnvFile: true,
+      // ignoreEnvFile: true,
       isGlobal: true,
-      // cache: true,
+      cache: true,
       // load: [config],
     }),
   ],

@@ -5,10 +5,14 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+
+// FASTIFY
 import fastifyCookie from '@fastify/cookie';
-import fastifyCsrf from 'fastify-csrf';
-import { AppModule } from './app.module';
+import fastifyCsrf from '@fastify/csrf-protection';
 import { FastifyInstance } from 'fastify';
+
+// APP
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
