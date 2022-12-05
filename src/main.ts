@@ -14,6 +14,9 @@ import { FastifyInstance } from 'fastify';
 // APP
 import { AppModule } from './app.module';
 
+// PRISMA SERVICE - FOR GRACEFUL SHUTDOWN
+import { PrismaService } from './prisma/prisma.service';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -34,6 +37,9 @@ async function bootstrap() {
 
     return fastify.csrfProtection(req, res, next);
   });
+
+  const prismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
   await app.listen(configService.get<number>('PORT'), '0.0.0.0');
 }
