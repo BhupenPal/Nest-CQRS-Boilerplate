@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { createLogger, format, transports, Logger } from 'winston';
+import { FastifyRequest } from '../../types/src/index';
 
 @Injectable()
 export class LoggerService {
   private winstonLogger: Logger = null;
 
   constructor() {
-    const consoleTransporter = new transports.Console({
-      format: format.combine(format.colorize(), format.prettyPrint()),
-    });
+    const consoleTransporter = new transports.Console();
 
     this.winstonLogger = createLogger({
       format: format.combine(
-        format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss',
-        }),
+        format.colorize(),
+        format.timestamp({ format: '' }),
         format.errors({ stack: true }),
-        format.splat(),
-        format.json(),
       ),
       exitOnError: false,
       transports: [consoleTransporter],
