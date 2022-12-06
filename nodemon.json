@@ -1,0 +1,4 @@
+{
+  "watch": ["webpack.config.js", ".env"],
+  "exec": "nest build --webpack --webpackPath webpack.config.js --watch"
+}
