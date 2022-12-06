@@ -3,8 +3,9 @@ import { ConfigModule } from './configuration/configservice.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
-  imports: [ConfigModule, UserModule, AuthModule, PrismaModule],
+  imports: [ConfigModule, UserModule, AuthModule, PrismaModule, RedisModule],
 })
 export class AppModule {}
