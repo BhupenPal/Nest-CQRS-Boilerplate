@@ -1,15 +1,17 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrimaryDB } from 'src/prisma/primary.service';
 import { GetUserQuery } from '../impl/get-user.query';
 
 @QueryHandler(GetUserQuery)
 export class GetUserHandler implements IQueryHandler<GetUserQuery> {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrimaryDB) {}
 
   async execute(query: GetUserQuery): Promise<string> {
-    const abc = await this.prisma.user.findRaw({});
+    const email = await this.prisma.user.findFirst({
+      where: { email: 'bhupen16pal@gmail.com' },
+      select: { email: true },
+    });
 
-    console.log(abc);
-    return 'GET USER QUERY - CALLED';
+    return 'GET USER QUERY - CALLED + ' + email.email;
   }
 }

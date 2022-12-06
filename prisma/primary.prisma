@@ -1,17 +1,17 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../databases/primary"
+  output   = "../generated/primary"
 }
 
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL")
+  url      = env("PRIMARY_DB_URL")
 }
 
 model User {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  email       String @unique
-  user_name   String
-  given_name  String
-  family_name String
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  // user_name   String
+  // given_name  String
+  // family_name String
 }

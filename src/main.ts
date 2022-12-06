@@ -15,7 +15,13 @@ import { FastifyInstance } from 'fastify';
 import { AppModule } from './app.module';
 
 // PRISMA SERVICE - FOR GRACEFUL SHUTDOWN
-import { PrismaService } from './prisma/prisma.service';
+import { PrimaryDB } from './prisma/primary.service';
+import { AnalyticsDB } from './prisma/analytics.service';
+
+// SWAGGER - API DOCUMENTATION
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+declare const module: any;
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -38,9 +44,30 @@ async function bootstrap() {
     return fastify.csrfProtection(req, res, next);
   });
 
-  const prismaService = app.get(PrismaService);
-  await prismaService.enableShutdownHooks(app);
+  // SWAGGER SETUP
+  const swaggerOptions = new DocumentBuilder()
+    .setTitle('NEST CQRS Boilerplate')
+    .setDescription('')
+    .build();
 
+  const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
+
+  SwaggerModule.setup('/apidoc', app, swaggerDocument);
+
+  // SHUTTING DOWN PRISMA SERVICES
+  const primaryDB = app.get(PrimaryDB);
+  await primaryDB.enableShutdownHooks(app);
+
+  const analyticsDB = app.get(AnalyticsDB);
+  await analyticsDB.enableShutdownHooks(app);
+
+  // EXPOSING PORT
   await app.listen(configService.get<number>('PORT'), '0.0.0.0');
+
+  // HOTMODULE REPLACEMENT
+  if (module.hot) {
+    module.hot.accept();
+    module.hot.dispose(() => app.close());
+  }
 }
 bootstrap();
