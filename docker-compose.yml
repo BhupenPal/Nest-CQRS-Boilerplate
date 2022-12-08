@@ -65,10 +65,8 @@ services:
       - .env
     environment:
       - REDIS_HOST=redis
-      - PRIMARY_DB_URL="mongodb+srv://cft_developer:UbSSH6R7nfTkOelX@cft-test-cluster.m5o8o.mongodb.net/Tealfeed_Backend_Dev?retryWrites=true&w=majority"
-      - ANALYTICS_DB_URL="mongodb+srv://cft_developer:UbSSH6R7nfTkOelX@cft-test-cluster.m5o8o.mongodb.net/Tealfeed_Backend_Dev?retryWrites=true&w=majority"
-      # - PRIMARY_DB_URL=mongodb://mongo_db:27017
-      # - ANALYTICS_DB_URL=postgres://POSTGRES_USER:POSTGRES_SUPERSECRET@postgres_db:5432
+      - PRIMARY_DB_URL=mongodb://mongo_db:27017
+      - ANALYTICS_DB_URL=postgres://POSTGRES_USER:POSTGRES_SUPERSECRET@postgres_db:5432
 
   # Production Server
   prod_api:
