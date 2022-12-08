@@ -8,7 +8,72 @@ datasource db {
     url      = env("PRIMARY_DB_URL")
 }
 
+enum UserRole {
+    ADMIN
+    MODERATOR
+    TEAM
+    USER
+}
+
 model User {
-    id    String @id @default(auto()) @map("_id") @db.ObjectId
-    email String @unique
+    id         String    @id @default(auto()) @map("_id") @db.ObjectId
+    givenName  String
+    familyName String
+    email      String    @unique
+    userName   String    @unique
+    password   String
+    articles   Article[]
+    Post       Post[]
+    createdAt  DateTime  @default(now())
+    role       UserRole  @default(USER)
+}
+
+model Article {
+    id        String           @id @default(auto()) @map("_id") @db.ObjectId
+    slug      String           @unique
+    title     String
+    content   String
+    author    User             @relation(fields: [authorId], references: [id])
+    authorId  String           @db.ObjectId
+    createdAt DateTime         @default(now())
+    comments  ArticleComment[]
+}
+
+model ArticleComment {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    article   Article  @relation(fields: [articleId], references: [id])
+    articleId String   @db.ObjectId
+    createdAt DateTime @default(now())
+    editedAt  DateTime @default(now())
+}
+
+model Post {
+    id          String        @id @default(auto()) @map("_id") @db.ObjectId
+    slug        String        @unique
+    content     String
+    author      User          @relation(fields: [authorId], references: [id])
+    authorId    String        @db.ObjectId
+    createdAt   DateTime      @default(now())
+    PostComment PostComment[]
+}
+
+model PostComment {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    post      Post     @relation(fields: [postId], references: [id])
+    postId    String   @db.ObjectId
+    createdAt DateTime @default(now())
+    editedAt  DateTime @default(now())
+}
+
+enum ActivityType {
+    ARTICLE
+    POST
+    ARTICLE_COMMENT
+    POST_COMMENT
+}
+
+model Activity {
+    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    name        ActivityType
+    performedAt DateTime
 }

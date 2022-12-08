@@ -1,6 +1,8 @@
 export class CreateUserCommand {
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  fullName: string;
+  constructor(
+    public readonly givenName: string,
+    public readonly familyName: string,
+    public readonly email: string,
+    public readonly password: string,
+  ) {}
 }
