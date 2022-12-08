@@ -1,6 +1,16 @@
+# Dependency directories
+node_modules/
+
+# Docker files
 Dockerfile
+docker-compose.yml
 .dockerignore
-node_modules
+
+# Logs
 npm-debug.log
+
+# Build
 dist
+
+# Licenses
 LICENSE
