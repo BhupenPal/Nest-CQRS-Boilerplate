@@ -5,11 +5,11 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from 'src/user/commands/impl/create-user.command';
 
 // QUERY
+import { AuthenticateUserQuery } from './queries/impl/authenticate-user.query';
 
 // DTO
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
-import { AuthenticateUserQuery } from './queries/impl/authenticate-user.query';
 
 @Controller('auth')
 export class AuthController {

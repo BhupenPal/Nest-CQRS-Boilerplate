@@ -77,3 +77,14 @@ model Activity {
     name        ActivityType
     performedAt DateTime
 }
+
+enum BadDomainReason {
+    DISPOSABLE_EMAIL
+    ORGANIZATION_BANNED
+}
+
+model BadDomain {
+    id     String          @id @default(auto()) @map("_id") @db.ObjectId
+    name   String          @unique
+    reason BadDomainReason
+}

@@ -1,7 +1,8 @@
-import { Module, CacheModule } from '@nestjs/common';
+import { Module, CacheModule, Global } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as RedisStore from 'cache-manager-ioredis';
 
+@Global()
 @Module({
   imports: [
     CacheModule.registerAsync({

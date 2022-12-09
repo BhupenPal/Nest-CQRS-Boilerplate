@@ -1,6 +1,7 @@
 // NEST.JS
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -36,9 +37,9 @@ async function bootstrap() {
   const fastify = app.getHttpAdapter().getInstance() as FastifyInstance;
 
   fastify.addHook('onRequest', (req, res, next) => {
-    if (req.method === 'GET') {
-      return next();
-    }
+    // if (req.method === 'GET') {
+    return next();
+    // }
 
     return fastify.csrfProtection(req, res, next);
   });
@@ -59,6 +60,17 @@ async function bootstrap() {
 
   const analyticsDB = app.get(AnalyticsDB);
   await analyticsDB.enableShutdownHooks(app);
+
+  // ADDDING CLASS VALIDATION AND TRANSFORMER PIPE
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+      whitelist: true,
+    }),
+  );
 
   // EXPOSING PORT
   await app.listen(configService.get<number>('PORT'), '0.0.0.0');
