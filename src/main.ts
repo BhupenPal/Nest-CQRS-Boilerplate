@@ -16,7 +16,6 @@ import { AppModule } from './app.module';
 
 // PRISMA SERVICE - FOR GRACEFUL SHUTDOWN
 import { PrimaryDB, AnalyticsDB } from '@app/database';
-// import { AnalyticsDB } from './prisma/analytics.service';
 
 // SWAGGER - API DOCUMENTATION
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
