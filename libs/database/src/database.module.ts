@@ -7,4 +7,4 @@ import { PrimaryDB } from './primary.service';
   providers: [AnalyticsDB, PrimaryDB],
   exports: [AnalyticsDB, PrimaryDB],
 })
-export class PrismaModule {}
+export class DatabaseModule {}

@@ -15,8 +15,8 @@ import { FastifyInstance } from 'fastify';
 import { AppModule } from './app.module';
 
 // PRISMA SERVICE - FOR GRACEFUL SHUTDOWN
-import { PrimaryDB } from './prisma/primary.service';
-import { AnalyticsDB } from './prisma/analytics.service';
+import { PrimaryDB, AnalyticsDB } from '@app/database';
+// import { AnalyticsDB } from './prisma/analytics.service';
 
 // SWAGGER - API DOCUMENTATION
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';

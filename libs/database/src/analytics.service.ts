@@ -1,6 +1,6 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaClient } from '../../prisma/generated/analytics';
+import { PrismaClient } from '../../../prisma/generated/analytics';
 
 @Injectable()
 export class AnalyticsDB extends PrismaClient implements OnModuleInit {

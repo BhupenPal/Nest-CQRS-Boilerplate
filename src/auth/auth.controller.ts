@@ -1,18 +1,41 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+
+// COMMAND
 import { CreateUserCommand } from 'src/user/commands/impl/create-user.command';
+
+// QUERY
+
+// DTO
+import { SigninDto } from './dto/signin.dto';
+import { SignupDto } from './dto/signup.dto';
+import { AuthenticateUserQuery } from './queries/impl/authenticate-user.query';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
-    private readonly createUserCommand: CreateUserCommand,
   ) {}
 
-  @Post()
+  @Post('signup')
   @HttpCode(HttpStatus.CREATED)
-  async signup(@Body() body) {
-    return await this.commandBus.execute(new CreateUserCommand('', '', '', ''));
+  async signup(@Body() body: SignupDto) {
+    return await this.commandBus.execute(
+      new CreateUserCommand(
+        body.givenName,
+        body.familyName,
+        body.email,
+        body.password,
+      ),
+    );
+  }
+
+  @Post('signin')
+  @HttpCode(HttpStatus.OK)
+  async signin(@Body() body: SigninDto) {
+    return await this.queryBus.execute(
+      new AuthenticateUserQuery(body.email, body.password),
+    );
   }
 }

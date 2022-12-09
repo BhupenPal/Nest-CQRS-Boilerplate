@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { PrimaryDB } from 'src/prisma/primary.service';
+import { PrimaryDB } from '@app/database';
 import { GetUserQuery } from '../impl/get-user.query';
 
 @QueryHandler(GetUserQuery)

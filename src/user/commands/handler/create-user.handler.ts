@@ -1,5 +1,5 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { PrimaryDB } from 'src/prisma/primary.service';
+import { PrimaryDB } from '@app/database';
 import { UserCreatedEvent } from 'src/user/events/impl/user-created.event';
 import { CreateUserCommand } from '../impl/create-user.command';
 

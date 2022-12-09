@@ -4,12 +4,12 @@ export class SignupDto {
   @IsString()
   @MinLength(4)
   @MaxLength(20)
-  firstName: string;
+  givenName: string;
 
   @IsString()
   @MinLength(4)
   @MaxLength(20)
-  lastName: string;
+  familyName: string;
 
   @IsEmail()
   email: string;

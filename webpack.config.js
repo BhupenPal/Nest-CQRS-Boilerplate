@@ -23,5 +23,8 @@ module.exports = function (options, webpack) {
         autoRestart: false,
       }),
     ],
+    stats: {
+      errorDetails: true,
+    },
   };
 };
