@@ -1,5 +1,9 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+
+// DTO
+import { GetUserProfileDto } from './dto/get-user-profile.dto';
+import { GetUserProfileQuery } from './queries/impl/get-user-profile.query';
 
 @Controller('user')
 export class UserController {
@@ -8,9 +12,11 @@ export class UserController {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @Get(':id')
+  @Get(':id/profile')
   @HttpCode(HttpStatus.OK)
-  async getUserProfile() {
-    return '';
+  async getUserProfile(@Param() param: GetUserProfileDto) {
+    const { id: userId } = param;
+
+    return await this.queryBus.execute(new GetUserProfileQuery(userId));
   }
 }
