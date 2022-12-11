@@ -1,4 +1,4 @@
-import { EventBus, ICommandHandler, QueryHandler } from '@nestjs/cqrs';
+import { ICommandHandler, QueryHandler } from '@nestjs/cqrs';
 import { PrimaryDB } from '@app/database';
 import { AuthenticateUserCommand } from '../impl/authenticate-user.command';
 import { argon2id, verify } from 'argon2';
@@ -8,10 +8,7 @@ import { BadRequestException } from '@nestjs/common';
 export class AuthenticateUserHandler
   implements ICommandHandler<AuthenticateUserCommand>
 {
-  constructor(
-    private readonly eventBus: EventBus,
-    private readonly primaryDB: PrimaryDB,
-  ) {}
+  constructor(private readonly primaryDB: PrimaryDB) {}
 
   public async execute(command: AuthenticateUserCommand): Promise<any> {
     const { email, password } = command;

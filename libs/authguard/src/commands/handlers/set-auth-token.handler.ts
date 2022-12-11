@@ -18,7 +18,7 @@ export class SetAuthTokenHandler
   ) {}
 
   public async execute(command: SetAuthTokenCommand): Promise<JWTUserPayload> {
-    const { user, res } = command;
+    const { user, req, res } = command;
 
     const userTokenPayload: JWTUserPayload = {
       id: user.id,
@@ -29,25 +29,11 @@ export class SetAuthTokenHandler
       userName: user.userName,
     };
 
-    const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(userTokenPayload, {
-        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-        expiresIn: 60,
-      }),
-      this.jwtService.signAsync(userTokenPayload, {
-        secret: this.configService.get('JWT_ACCESS_REFRESH_SECRET'),
-        expiresIn: 60,
-      }),
-    ]);
-
-    // @TODO: ENHANCE THIS LOGIC
-    const redisKeyPattern = user.id + ':' + refreshToken;
-
-    await this.cacheManager.set(
-      redisKeyPattern,
-      Date.now(),
-      this.configService.get<number>('JWT_REFRESH_TOKEN_EXPIRE_IN') * 60, // CONVERTING TO SECONDS
+    const [accessToken, refreshToken] = await this.signAccessRefreshToken(
+      userTokenPayload,
     );
+
+    await this.setRefreshTokenInRedis(user, refreshToken, req.ip);
 
     res.setCookie(
       'access_token',
@@ -62,6 +48,40 @@ export class SetAuthTokenHandler
     );
 
     return userTokenPayload;
+  }
+
+  private signAccessRefreshToken(userTokenPayload: JWTUserPayload) {
+    return Promise.all([
+      this.jwtService.signAsync(userTokenPayload, {
+        secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
+        expiresIn: 60,
+      }),
+      this.jwtService.signAsync(userTokenPayload, {
+        secret: this.configService.get('JWT_ACCESS_REFRESH_SECRET'),
+        expiresIn: 60,
+      }),
+    ]);
+  }
+
+  private setRefreshTokenInRedis(
+    user: JWTUserPayload,
+    refreshToken: string,
+    req_ip: string,
+  ) {
+    const redisKey = user.id + ':' + refreshToken;
+
+    const redisValue = {
+      ...user,
+      ip: req_ip,
+      type: 'auth-refresh-token',
+      timestamp: Date.now(),
+    };
+
+    return this.cacheManager.set(
+      redisKey,
+      redisValue,
+      this.configService.get<number>('JWT_REFRESH_TOKEN_EXPIRE_IN') * 60, // CONVERTING TO SECONDS
+    );
   }
 
   private readonly secureCookieConfig: CookieSerializeOptions = {

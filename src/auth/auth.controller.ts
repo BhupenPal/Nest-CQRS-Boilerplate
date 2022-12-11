@@ -1,16 +1,25 @@
-import { LocalAuthGuard } from '@app/authguard';
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { FastifyReply, FastifyRequest } from '@app/types';
+import {
+  JWTAuthGuard,
+  LocalAuthGuard,
+  SetAuthTokenCommand,
+} from '@app/authguard';
 
 // COMMAND
 import { CreateUserCommand } from 'src/user/commands/impl/create-user.command';
+import { GetAuthTokenForSocket } from './commands/impl/get-auth-token-socket.command';
 
 // QUERY
 
@@ -41,9 +50,22 @@ export class AuthController {
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
-  async signin(@Body() body: SigninDto) {
-    // return await this.queryBus.execute(
-    //   new AuthenticateUserQuery(body.email, body.password),
-    // );
+  async signin(
+    @Body() body: SigninDto,
+    @Req() req: FastifyRequest,
+    @Res({ passthrough: true }) res: FastifyReply,
+  ) {
+    return await this.commandBus.execute(
+      new SetAuthTokenCommand(req.user, req, res),
+    );
+  }
+
+  @Get('socket-auth')
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JWTAuthGuard)
+  async getTokenForSocket(@Req() req: FastifyRequest) {
+    return await this.commandBus.execute(
+      new GetAuthTokenForSocket(req.user, req),
+    );
   }
 }

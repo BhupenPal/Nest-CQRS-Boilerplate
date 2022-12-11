@@ -1,5 +1,9 @@
-import { FastifyReply } from '@app/types';
+import { FastifyReply, FastifyRequest, JWTUserPayload } from '@app/types';
 
 export class SetAuthTokenCommand {
-  constructor(public readonly user: any, public readonly res: FastifyReply) {}
+  constructor(
+    public readonly user: JWTUserPayload,
+    public readonly req: FastifyRequest,
+    public readonly res: FastifyReply,
+  ) {}
 }
