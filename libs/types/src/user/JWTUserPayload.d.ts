@@ -1,7 +1,8 @@
-export interface JwtUserPayload {
-  sub: any;
+export interface JWTUserPayload {
+  id: any;
   userName: string;
-  fullName: string;
+  givenName: string;
+  familyName: string;
   avatar: string | null;
   role: string | null;
 

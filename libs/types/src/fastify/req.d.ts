@@ -1,6 +1,6 @@
 import { FastifyRequest as OriginalFastifyRequest } from 'fastify';
-import { JwtUserPayload } from './req.user';
+import { JWTUserPayload } from '../user/JWTUserPayload';
 
 type FastifyRequest = OriginalFastifyRequest & {
-  user: JwtUserPayload;
+  user: JWTUserPayload;
 };

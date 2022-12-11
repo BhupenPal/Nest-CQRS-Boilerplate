@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AuthController } from './auth.controller';
 import { UserCQRS, UserModule } from 'src/user/user.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
-  imports: [CqrsModule, UserModule],
+  imports: [CqrsModule, PassportModule, UserModule],
   providers: [...UserCQRS],
   controllers: [AuthController],
 })
