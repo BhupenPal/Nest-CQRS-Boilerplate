@@ -2,7 +2,7 @@ import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
 @WebSocketGateway({
   namespace: 'notification',
-  path: '/websocket',
+  path: '/socket',
   transports: ['websocket'],
 })
 export class NotificationGateway {

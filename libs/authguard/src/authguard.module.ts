@@ -8,15 +8,17 @@ import {
 } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RecaptchaAuthGuard } from './guards/recaptcha.guard';
+import { WsGuard } from './guards/ws-auth.guard';
 
 const setAuthTokenCQRS = [...AuthTokenCommandHandler];
 
 const authGuards = [
-  LocalAuthGuard,
   JWTAuthGuard,
   JWTLooseAuthGuard,
   JWTRefreshAuthGuard,
+  LocalAuthGuard,
   RecaptchaAuthGuard,
+  WsGuard,
 ];
 
 @Global()

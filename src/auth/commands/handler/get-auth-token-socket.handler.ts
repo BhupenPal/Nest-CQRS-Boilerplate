@@ -19,6 +19,8 @@ export class GetAuthTokenForSocketHandler
   public async execute(command: GetAuthTokenForSocket): Promise<any> {
     const { user, req } = command;
 
+    // CHECK IF ALREADY IN THE ROOM
+
     const socketAccessToken = await this.signSocketAccessToken(user);
 
     await this.storeTokenInRedis(user.id, socketAccessToken, req.ip);

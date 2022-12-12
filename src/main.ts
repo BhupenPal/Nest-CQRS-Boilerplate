@@ -26,7 +26,11 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    new FastifyAdapter({
+      caseSensitive: false,
+      ignoreTrailingSlash: true,
+      trustProxy: true,
+    }),
   );
 
   const configService = app.get(ConfigService);
