@@ -1,14 +1,6 @@
 version: '3.9'
 
 services:
-  # MongoDB Service
-  mongo_db:
-    container_name: primary_db
-    image: mongo:latest
-    restart: always
-    volumes:
-      - mongo_db:/data/db
-
   # Postgres Service
   postgres_db:
     container_name: analytics_db
@@ -58,7 +50,6 @@ services:
       context: .
       target: development
     depends_on:
-      - mongo_db
       - postgres_db
       - redis
       - nginx
@@ -66,7 +57,7 @@ services:
       - .env
     environment:
       REDIS_HOST: redis
-      PRIMARY_DB_URL: mongodb://mongo_db:27017/PRIMARY_DB
+      PRIMARY_DB_URL: mongodb+srv://BhupenPal:sxct1lhPPL4DYsgy@poc-cluster.un9wmru.mongodb.net/?retryWrites=true&w=majority
       ANALYTICS_DB_URL: postgres://POSTGRES_USER:POSTGRES_SUPERSECRET@postgres_db:5432/ANALYTICS_DB
 
   # Production Server
@@ -79,6 +70,5 @@ services:
       target: production
 
 volumes:
-  mongo_db: {}
   postgres_db: {}
   redis: {}
