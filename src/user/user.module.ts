@@ -6,17 +6,12 @@ import { UserQueryHandler } from './queries/handler';
 import { UserSagaHandler } from './sagas';
 import { UserController } from './user.controller';
 
-export const UserCQRS = [
-  ...UserCommandHandler,
-  ...UserQueryHandler,
-  ...UserEventHandler,
-  ...UserSagaHandler,
-];
+export const UserCQ = [...UserCommandHandler, ...UserQueryHandler];
 
 @Module({
   imports: [CqrsModule],
   controllers: [UserController],
-  providers: [...UserCQRS],
-  exports: [...UserCQRS],
+  providers: [...UserCQ, ...UserEventHandler, ...UserSagaHandler],
+  exports: [...UserCQ],
 })
 export class UserModule {}

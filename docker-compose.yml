@@ -57,7 +57,6 @@ services:
       - .env
     environment:
       REDIS_HOST: redis
-      PRIMARY_DB_URL: mongodb+srv://BhupenPal:sxct1lhPPL4DYsgy@poc-cluster.un9wmru.mongodb.net/?retryWrites=true&w=majority
       ANALYTICS_DB_URL: postgres://POSTGRES_USER:POSTGRES_SUPERSECRET@postgres_db:5432/ANALYTICS_DB
 
   # Production Server

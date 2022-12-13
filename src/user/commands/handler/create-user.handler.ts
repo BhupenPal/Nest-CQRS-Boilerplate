@@ -53,6 +53,8 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
     });
 
     this.eventBus.publish(new UserCreatedEvent(user.id));
+
+    return user;
   }
 
   private createHash(password: string) {
