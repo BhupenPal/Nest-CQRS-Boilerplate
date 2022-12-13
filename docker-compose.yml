@@ -1,18 +1,6 @@
 version: '3.9'
 
 services:
-  # Postgres Service
-  postgres_db:
-    container_name: analytics_db
-    image: postgres:15.1-alpine
-    restart: always
-    volumes:
-      - postgres_db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: POSTGRES_USER
-      POSTGRES_PASSWORD: POSTGRES_SUPERSECRET
-      POSTGRES_DB: ANALYTICS_DB
-
   # Redis Service
   redis:
     container_name: redis_cache
@@ -50,14 +38,12 @@ services:
       context: .
       target: development
     depends_on:
-      - postgres_db
       - redis
       - nginx
     env_file:
       - .env
     environment:
       REDIS_HOST: redis
-      ANALYTICS_DB_URL: postgres://POSTGRES_USER:POSTGRES_SUPERSECRET@postgres_db:5432/ANALYTICS_DB
 
   # Production Server
   prod_api:
@@ -69,5 +55,4 @@ services:
       target: production
 
 volumes:
-  postgres_db: {}
   redis: {}
