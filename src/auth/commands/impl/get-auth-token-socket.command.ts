@@ -1,6 +1,6 @@
 import { FastifyRequest, JWTUserPayload } from '@app/types';
 
-export class GetAuthTokenForSocket {
+export class GetAuthTokenForSocketCommand {
   constructor(
     public readonly user: JWTUserPayload,
     public readonly req: FastifyRequest,

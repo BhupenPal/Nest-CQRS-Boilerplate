@@ -19,7 +19,7 @@ import {
 
 // COMMAND
 import { CreateUserCommand } from 'src/user/commands/impl/create-user.command';
-import { GetAuthTokenForSocket } from './commands/impl/get-auth-token-socket.command';
+import { GetAuthTokenForSocketCommand } from './commands/impl/get-auth-token-socket.command';
 
 // QUERY
 
@@ -65,7 +65,7 @@ export class AuthController {
   @UseGuards(JWTAuthGuard)
   async getTokenForSocket(@Req() req: FastifyRequest) {
     return await this.commandBus.execute(
-      new GetAuthTokenForSocket(req.user, req),
+      new GetAuthTokenForSocketCommand(req.user, req),
     );
   }
 }

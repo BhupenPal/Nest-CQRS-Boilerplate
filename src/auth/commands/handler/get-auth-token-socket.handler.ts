@@ -1,14 +1,14 @@
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GetAuthTokenForSocket } from '../impl/get-auth-token-socket.command';
-import { ICommandHandler, QueryHandler } from '@nestjs/cqrs';
+import { GetAuthTokenForSocketCommand } from '../impl/get-auth-token-socket.command';
+import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
 import { JwtService } from '@nestjs/jwt';
 import { JWTUserPayload } from '@app/types';
 
-@QueryHandler(GetAuthTokenForSocket)
+@CommandHandler(GetAuthTokenForSocketCommand)
 export class GetAuthTokenForSocketHandler
-  implements ICommandHandler<GetAuthTokenForSocket>
+  implements ICommandHandler<GetAuthTokenForSocketCommand>
 {
   constructor(
     private readonly jwtService: JwtService,
@@ -16,7 +16,7 @@ export class GetAuthTokenForSocketHandler
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  public async execute(command: GetAuthTokenForSocket): Promise<any> {
+  public async execute(command: GetAuthTokenForSocketCommand): Promise<any> {
     const { user, req } = command;
 
     // CHECK IF ALREADY IN THE ROOM

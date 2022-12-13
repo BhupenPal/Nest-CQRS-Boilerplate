@@ -1,10 +1,10 @@
-import { ICommandHandler, QueryHandler } from '@nestjs/cqrs';
+import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
 import { PrimaryDB } from '@app/database';
 import { AuthenticateUserCommand } from '../impl/authenticate-user.command';
 import { argon2id, verify } from 'argon2';
 import { BadRequestException } from '@nestjs/common';
 
-@QueryHandler(AuthenticateUserCommand)
+@CommandHandler(AuthenticateUserCommand)
 export class AuthenticateUserHandler
   implements ICommandHandler<AuthenticateUserCommand>
 {
