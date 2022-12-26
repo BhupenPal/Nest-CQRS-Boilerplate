@@ -1,10 +1,12 @@
 import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { ApiTags } from '@nestjs/swagger';
 
 // DTO
 import { GetUserProfileDto } from './dto/get-user-profile.dto';
 import { GetUserProfileQuery } from './queries/impl/get-user-profile.query';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(

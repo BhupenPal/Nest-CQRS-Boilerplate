@@ -26,7 +26,9 @@ import { GetAuthTokenForSocketCommand } from './commands/impl/get-auth-token-soc
 // DTO
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(

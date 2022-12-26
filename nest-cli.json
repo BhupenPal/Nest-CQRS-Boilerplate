@@ -50,6 +50,15 @@
     }
   },
   "compilerOptions": {
-    "webpack": true
+    "webpack": true,
+    "plugins": [
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "classValidatorShim": true,
+          "introspectComments": true
+        }
+      }
+    ]
   }
 }
