@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  # Redis Service
+  redis:
+    container_name: redis_cache
+    image: redis:7.0.5-alpine
+    restart: always
+    volumes:
+      - redis:/data
+    command: redis-server --save 20 1 --loglevel warning
+
+  # Nginx Service
+  nginx:
+    container_name: nginx_proxy
+    image: nginx:1.22-alpine
+    restart: unless-stopped
+    volumes:
+      - ./nginx/templates/:/etc/nginx/templates
+    ports:
+      - 3000:80
+    env_file:
+      - .env
+    environment:
+      NGINX_ENVSUBST_TEMPLATE_SUFFIX: '.conf'
+      API_HOST: dev_api
+
+  # Development Server
+  dev_api:
+    container_name: development_server
+    image: nest-cqrs-api-dev
+    restart: always
+    command: yarn start:dev
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    build:
+      context: .
+      target: development
+    depends_on:
+      - redis
+      - nginx
+    env_file:
+      - .env
+    environment:
+      REDIS_HOST: redis
+
+  # Production Server
+  prod_api:
+    container_name: production_server
+    image: nest-cqrs-api-prod
+    restart: always
+    build:
+      context: .
+      target: production
+
+volumes:
+  redis: {}

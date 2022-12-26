@@ -1,0 +1,14 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated/analytics"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("ANALYTICS_DB_URL")
+}
+
+model Event {
+    id   String @id @default(dbgenerated())
+    name String @unique
+}
