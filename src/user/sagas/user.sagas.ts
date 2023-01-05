@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Saga, ICommand, ofType } from '@nestjs/cqrs';
-import { Observable } from 'rxjs';
+import { Observable, delay, map } from 'rxjs';
 import { UserCreatedEvent } from '../events/impl/user-created.event';
-import { delay, map } from 'rxjs/operators';
 
 @Injectable()
 export class UserSagas {

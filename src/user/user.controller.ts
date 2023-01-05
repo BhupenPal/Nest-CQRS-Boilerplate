@@ -6,8 +6,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { GetUserProfileDto } from './dto/get-user-profile.dto';
 import { GetUserProfileQuery } from './queries/impl/get-user-profile.query';
 
-@ApiTags('user')
-@Controller('user')
+@ApiTags('users')
+@Controller('users')
 export class UserController {
   constructor(
     private readonly queryBus: QueryBus,
